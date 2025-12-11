@@ -6,7 +6,7 @@ let io: SocketIOServer;
 export const initializeSocket = (server: HTTPServer) => {
   io = new SocketIOServer(server, {
     cors: {
-      origin: 'http://localhost:3000',
+      origin: 'https://ipl-auction-frontend-one.vercel.app',
       methods: ['GET', 'POST'],
       credentials: true,
     },
@@ -21,7 +21,7 @@ export const initializeSocket = (server: HTTPServer) => {
 
     socket.on('request:state', async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/auction/state');
+        const response = await fetch('https://ipl-auction-frontend-one.vercel.app/auction/state');
         const state = await response.json();
         socket.emit('auction:stateSnapshot', state);
       } catch (error) {

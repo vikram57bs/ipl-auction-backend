@@ -11,7 +11,7 @@ const app = express();
 const server = createServer(app);
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://ipl-auction-frontend-one.vercel.app',
   credentials: true,
 }));
 
