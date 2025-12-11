@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           Int     @id @default(autoincrement())
+  username     String  @unique
+  passwordHash String
+  role         String
+  teamId       Int?
+  team         Team?   @relation(fields: [teamId], references: [id])
+  createdAt    DateTime @default(now())
+}
+
+model Team {
+  id              Int      @id @default(autoincrement())
+  name            String   @unique
+  initialBudget   Float
+  remainingBudget Float
+  users           User[]
+  players         Player[]
+  transactions    AuctionTransaction[]
+  createdAt       DateTime @default(now())
+}
+
+model Player {
+  id            Int           @id @default(autoincrement())
+  name          String
+  age           Int
+  role          String
+  matches       Int           @default(0)
+  runs          Int           @default(0)
+  fifties       Int           @default(0)
+  hundreds      Int           @default(0)
+  strikeRate    Float         @default(0.0)
+  wickets       Int           @default(0)
+  economy       Float         @default(0.0)
+  basePrice     Float
+  status        String        @default("UNSOLD")
+  soldPrice     Float?
+  soldToTeamId  Int?
+  soldToTeam    Team?         @relation(fields: [soldToTeamId], references: [id])
+  transactions  AuctionTransaction[]
+  createdAt     DateTime      @default(now())
+}
+
+model AuctionTransaction {
+  id        Int      @id @default(autoincrement())
+  playerId  Int
+  player    Player   @relation(fields: [playerId], references: [id])
+  teamId    Int
+  team      Team     @relation(fields: [teamId], references: [id])
+  amount    Float
+  createdAt DateTime @default(now())
+}
